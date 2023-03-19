@@ -1,0 +1,18 @@
+{
+  "name": "ice-chan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node ./index.js"
+  },
+  "author": "hiyouga",
+  "license": "MIT",
+  "dependencies": {
+    "icqq": "^0.0.33",
+    "needle": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.6.1"
+  }
+}
