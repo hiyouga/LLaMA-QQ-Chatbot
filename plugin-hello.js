@@ -5,7 +5,7 @@ const { client } = require("./index")
 // send private messages
 client.on("message.private", function (msg) {
     if (msg.raw_message === "/help") {
-        msg.reply("/preset [nekogirl/imotto] 使用预设 /prompt 吟唱咒语 /clear 清空记忆", false) // false: turn off quote
+        msg.reply("/preset [default/assistant/nekogirl/imotto] 使用预设 /prompt 吟唱咒语 /clear 清空记忆", false) // false: turn off quote
     } else {
         var nested = {
             msg: msg.raw_message
@@ -25,7 +25,7 @@ client.on("message.private", function (msg) {
 client.on("message.group", function (msg) {
     if (msg.raw_message.search("@小冰") != -1) {
         if (msg.raw_message.search("/help") != -1) {
-            msg.reply("/preset [nekogirl/imotto] 使用预设 /prompt 吟唱咒语 /clear 清空记忆", false)
+            msg.reply("/preset [default/assistant/nekogirl/imotto] 使用预设 /prompt 吟唱咒语 /clear 清空记忆", false)
         } else {
             var nested = {
                 msg: msg.raw_message.replace("@小冰", "")
