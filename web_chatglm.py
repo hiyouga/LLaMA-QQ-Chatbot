@@ -20,6 +20,7 @@ class ChatBot:
         self._prompt_list = json.load(open('prompts.json', 'r', encoding='utf-8'))
         self._preset = preset
         self._history = list()
+        self._forget = list()
         self._custom_prompt = tuple()
         self._tokenizer, self._model = self._init_model()
         self.reset()
@@ -37,6 +38,7 @@ class ChatBot:
 
     def reset(self):
         self._history = [self._prompt]
+        self._forget = [True]
         self._length = self.tuple_length(self._prompt)
         logger.info('memory cleared')
         logger.info('prompt: {} {}'.format(self._prompt[0], self._prompt[1]))
@@ -52,7 +54,7 @@ class ChatBot:
             logger.info('preset applied')
             return 0
 
-    def add_prompt(self, prompt):
+    def new_prompt(self, prompt):
         if len(prompt) > 500:
             logger.warning('overlength prompt')
             return -1
@@ -60,22 +62,25 @@ class ChatBot:
         self._preset = 'custom'
         self._custom_prompt = (prompt, response)
         self.reset()
-        logger.info('prompt applied')
+        logger.info('new prompt applied')
         return response
 
     def chat(self, query):
         while self._length + len(query) > 2000: # avoid overlength tokens
             garbage = self._history.pop(0)
+            is_forget = self._forget.pop(0)
             self._length -= self.tuple_length(garbage)
-            if garbage[0] == self._prompt[0]:
+            if is_forget:
                 self._history.append(self._prompt)
-                logger.info('emphasize prompt finished')
+                self._forget.append(True)
                 self._length += self.tuple_length(self._history[-1])
-        response, self._history = self._model.chat(self._tokenizer, query, history=self._history)
+                logger.info('emphasize prompt finished')
+        response, _ = self._model.chat(self._tokenizer, query, history=self._history)
         if ('抱歉' in response) or ('对不起' in response):
-            garbage = self._history.pop(-1)
             logger.info('delete this memory')
         else:
+            self._history.append((query, response))
+            self._forget.append(False)
             self._length += self.tuple_length(self._history[-1])
         return response
 
@@ -114,7 +119,7 @@ def msg():
         return '[预设已调整为{}]'.format(preset)
     if query.startswith('/prompt'):
         prompt = query.replace('/prompt', '').strip()
-        status = bot.add_prompt(prompt)
+        status = bot.new_prompt(prompt)
         if status == -1:
             return '[咒语太长了]'
         return '[咒语吟唱成功]' + status
