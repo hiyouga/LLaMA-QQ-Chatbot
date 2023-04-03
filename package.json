@@ -9,7 +9,7 @@
   "author": "hiyouga",
   "license": "MIT",
   "dependencies": {
-    "icqq": "^0.0.33",
+    "icqq": "^0.0.37",
     "needle": "^3.2.0"
   },
   "devDependencies": {

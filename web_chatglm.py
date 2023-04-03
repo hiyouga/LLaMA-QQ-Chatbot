@@ -86,7 +86,7 @@ class ChatBot:
 
     @staticmethod
     def _init_model():
-        commit_hash = '1b54948bb28de5258b55b893e193c3046a0b0484'
+        commit_hash = '4a9b711e61d62b64ae8a07d763553a98a984d281'
         tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True, revision=commit_hash)
         model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True, revision=commit_hash).half().cuda()
         model.eval()
@@ -96,8 +96,8 @@ class ChatBot:
     def tuple_length(tup):
         return len(tup[0] + tup[1])
 
-bot = ChatBot()
 app = Flask(__name__)
+bot = ChatBot()
 
 @app.route('/')
 def hello():
