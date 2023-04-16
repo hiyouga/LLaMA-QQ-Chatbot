@@ -86,7 +86,7 @@ class ChatBot:
 
     @staticmethod
     def _init_model():
-        commit_hash = '4a9b711e61d62b64ae8a07d763553a98a984d281'
+        commit_hash = '4de8efebc837788ffbfc0a15663de8553da362a2'
         tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True, revision=commit_hash)
         model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True, revision=commit_hash).half().cuda()
         model.eval()
