@@ -1,5 +1,0 @@
-torch>=2.0.0
-protobuf
-cpm_kernels
-sentencepiece
-transformers>=4.27.4
